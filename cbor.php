@@ -255,9 +255,6 @@ private static function readInternal($file,$depth=0,$type=null){
      }
      return new CBORTagged($length,CBOR::readInternal($file,$depth+1));
    case 7: // Simple value
-     if($data==24){
-       $data=CBOR::fgetb($file);
-     }
      if($data==20)return false;
      if($data==21)return true;
      if($data==22)return null;
@@ -270,7 +267,7 @@ private static function readInternal($file,$depth=0,$type=null){
      } else if($data==27){
        throw new CBORException("Not supported");
      } else if($data==24){
-       $data=CBOR::fgetw($file);
+       $data=CBOR::fgetb($file);
        if($data<32)throw new CBORException("Invalid data");
      }
      if($data>=28){
