@@ -114,10 +114,21 @@ private static function readInternal($file,$depth=0,$type=null){
        return fread($file,CBOR::fgetdw($file));
      }
      if($data==27){
-       throw new CBORException("Not supported");
+       $high=CBOR::fgetdw($file);
+       if($high==0){
+        throw new CBORException("length bigger than supported");
+       }
+       $length=CBOR::fgetdw($file);
      }
      if($data==31){
-       throw new CBORException("Not supported");
+       $ret=array();
+       while(true){
+        $b=CBOR::fgetb($file);
+        if($b==255)break;
+        if($b<0x40 || $b>=0x5c)throw new CBORException("Expected byte string chunk");
+        array_push($ret,CBOR::readInternal($file,$depth+1,$b));
+       }     
+       return implode("",$ret);
      }
      throw new CBORException("Invalid data");
      break;
@@ -136,10 +147,21 @@ private static function readInternal($file,$depth=0,$type=null){
        return fread($file,CBOR::fgetdw($file));
      }
      if($data==27){
-       throw new CBORException("Not supported");
+       $high=CBOR::fgetdw($file);
+       if($high==0){
+        throw new CBORException("length bigger than supported");
+       }
+       $length=CBOR::fgetdw($file);
      }
      if($data==31){
-       throw new CBORException("Not supported");
+       $ret=array();
+       while(true){
+        $b=CBOR::fgetb($file);
+        if($b==255)break;
+        if($b<0x60 || $b>=0x7c)throw new CBORException("Expected text string chunk");
+        array_push($ret,CBOR::readInternal($file,$depth+1,$b));
+       }     
+       return implode("",$ret);
      }
      throw new CBORException("Invalid data");
      break;   
@@ -152,7 +174,11 @@ private static function readInternal($file,$depth=0,$type=null){
      } else if($data==26){
        $length=CBOR::fgetdw($file);
      } else if($data==27){
-       throw new CBORException("Not supported");
+       $high=CBOR::fgetdw($file);
+       if($high==0){
+        throw new CBORException("length bigger than supported");
+       }
+       $length=CBOR::fgetdw($file);
      }
      if($data==31){
       $ret=array();
@@ -183,7 +209,11 @@ private static function readInternal($file,$depth=0,$type=null){
        $length=CBOR::fgetdw($file);
      }
      if($data==27){
-       throw new CBORException("Not supported");
+       $high=CBOR::fgetdw($file);
+       if($high==0){
+        throw new CBORException("length bigger than supported");
+       }
+       $length=CBOR::fgetdw($file);
      }
      if($data==31){
       $ret=array();
@@ -218,7 +248,7 @@ private static function readInternal($file,$depth=0,$type=null){
        $length=CBOR::fgetdw($file);
      }
      if($data==27){
-       throw new CBORException("Not supported");
+        throw new CBORException("Not supported");
      }
      if($data>=28){
        throw new CBORException("Invalid data");
