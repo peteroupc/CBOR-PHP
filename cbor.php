@@ -268,7 +268,11 @@ private static function readInternal($file,$depth=0,$type=null){
        $length=CBOR::fgetdw($file);
      }
      if($data==27){
-        throw new CBORException("Not supported");
+       $high=CBOR::fgetdw($file);
+       if($high!=0){
+        throw new CBORException("tag bigger than supported");
+       }
+       $length=CBOR::fgetdw($file);
      }
      if($data>=28){
        throw new CBORException("Invalid data");
