@@ -5,11 +5,11 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
- 
+
 class CBORException extends Exception {}
- 
+
 class CBORTagged {
   var $value;
   var $tag;
@@ -17,7 +17,7 @@ class CBORTagged {
    return $this->tag;
   }
   private function getValue(){
-   return $this->value;  
+   return $this->value;
   }
   function CBORTagged($tag, $value){
    $this->tag=$tag;
@@ -29,7 +29,7 @@ class CBORBignum {
   var $value;
   var $tag;
   private function getValue(){
-   return $this->value;  
+   return $this->value;
   }
   public function __toString(){
    return $this->value;
@@ -42,7 +42,7 @@ class CBORBignum {
 class CBORSimple {
   var $value;
   private function getValue(){
-   return $this->value;  
+   return $this->value;
   }
   function CBORSimple($value){
    $this->value=$value;
@@ -147,7 +147,7 @@ private static function readInternal($file,$depth=0,$type=null){
         if($b==255)break;
         if($b<0x40 || $b>=0x5c)throw new CBORException("Expected byte string chunk");
         array_push($ret,CBOR::readInternal($file,$depth+1,$b));
-       }     
+       }
        return implode("",$ret);
      }
      throw new CBORException("Invalid data");
@@ -180,11 +180,11 @@ private static function readInternal($file,$depth=0,$type=null){
         if($b==255)break;
         if($b<0x60 || $b>=0x7c)throw new CBORException("Expected text string chunk");
         array_push($ret,CBOR::readInternal($file,$depth+1,$b));
-       }     
+       }
        return implode("",$ret);
      }
      throw new CBORException("Invalid data");
-     break;   
+     break;
    case 4: // Array
      if($data<24)$length=$data;
      if($data==24){
@@ -206,7 +206,7 @@ private static function readInternal($file,$depth=0,$type=null){
        $b=CBOR::fgetb($file);
        if($b==255)break;
        array_push($ret,CBOR::readInternal($file,$depth+1,$b));
-      }     
+      }
       return $ret;
      } else if($data<28){
       $ret=array();
@@ -243,7 +243,7 @@ private static function readInternal($file,$depth=0,$type=null){
        $key=CBOR::readInternal($file,$depth+1,$b);
        $value=CBOR::readInternal($file,$depth+1);
        $ret[$key]=$value;
-      }     
+      }
       return $ret;
      } else if($data<28){
       $ret=array();
@@ -255,7 +255,7 @@ private static function readInternal($file,$depth=0,$type=null){
       return $ret;
      }
      throw new CBORException("Invalid data");
-     break;   
+     break;
    case 6: // Tagged data
      if($data<24)$length=fread($file,$data);
      if($data==24){
