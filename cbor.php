@@ -304,5 +304,3 @@ private static function readInternal($file,$depth=0,$type=null){
 }
 
 }
-
-?>
