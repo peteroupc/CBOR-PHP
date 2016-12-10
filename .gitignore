@@ -28,3 +28,4 @@ js/DecTest.*
 obj/
 packages/
 release.properties
+target/
